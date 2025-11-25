@@ -1,0 +1,107 @@
+name: Deploy Angular App to GitHub Pages
+
+on:
+  push:
+    branches: [ ai-prompt-testing ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+environment:
+  name: github-pages
+  url: ${{ steps.deployment.outputs.page_url }}
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 'lts/*'
+        cache: 'npm'
+        
+    - name: Cache node_modules
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+          
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run Jest tests with coverage validation
+      run: |
+        echo "Running Jest tests with coverage..."
+        npm run test -- --coverage --watchAll=false --passWithNoTests 2>&1 | tee test-output.log
+        
+        # Check if tests passed
+        if [ ${PIPESTATUS[0]} -ne 0 ]; then
+          echo "❌ Tests failed! Stopping deployment."
+          exit 1
+        fi
+        
+        # Extract coverage percentages from output
+        STMT_COV=$(grep -E "All files.*%" test-output.log | awk '{print $4}' | sed 's/%//' || echo "0")
+        BRANCH_COV=$(grep -E "All files.*%" test-output.log | awk '{print $5}' | sed 's/%//' || echo "0")
+        FUNC_COV=$(grep -E "All files.*%" test-output.log | awk '{print $6}' | sed 's/%//' || echo "0")
+        LINE_COV=$(grep -E "All files.*%" test-output.log | awk '{print $7}' | sed 's/%//' || echo "0")
+        
+        # Use statement coverage as the primary metric
+        TOTAL_COV=$STMT_COV
+        
+        echo "📊 Coverage Results:"
+        echo "Statements: ${STMT_COV}%"
+        echo "Branches: ${BRANCH_COV}%"
+        echo "Functions: ${FUNC_COV}%"
+        echo "Lines: ${LINE_COV}%"
+        echo "Total Coverage: ${TOTAL_COV}%"
+        
+        # Check if coverage meets minimum requirement (80%)
+        if (( $(echo "$TOTAL_COV < 80" | bc -l) )); then
+          echo "❌ Coverage ${TOTAL_COV}% is below required 80%. Stopping deployment."
+          exit 1
+        fi
+        
+        echo "✅ Coverage validation passed (${TOTAL_COV}% ≥ 80%)"
+        
+    - name: Build Angular project
+      run: |
+        echo "Building Angular project for GitHub Pages..."
+        npm run build -- --base-href '/CICD-Deployment/'
+        
+    - name: Copy index.html to 404.html (SPA routing fix)
+      run: |
+        cp dist/snehal-demo-3/index.html dist/snehal-demo-3/404.html
+        echo "✅ Created 404.html for SPA routing support"
+        
+    - name: Configure Pages
+      uses: actions/configure-pages@v4
+      
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: './dist/snehal-demo-3'
+        
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+      
+    - name: Display deployment URL
+      run: |
+        echo "🚀 Deployment completed successfully!"
+        echo "📍 Your Angular app is now live at: ${{ steps.deployment.outputs.page_url }}"
+        echo "🔗 Direct link: https://snehalrs25.github.io/CICD-Deployment/"
