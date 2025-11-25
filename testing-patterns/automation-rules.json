@@ -1,0 +1,89 @@
+{
+  "automation": {
+    "fileManagement": {
+      "rules": [
+        "Do not create any unnecessary or additional files such as 'jest.focus.*.config.js'",
+        "Always follow the existing file structure and project conventions",
+        "If a test file already exists, append the tests there rather than creating new files",
+        "If test file doesn't exist, create it only following the project's naming and structural conventions",
+        "Do not modify unrelated files or project configurations during test generation",
+        "Maintain consistency with existing test patterns and file organization"
+      ],
+      "enforcement": "Strictly enforce these rules during automated test generation to prevent workspace pollution",
+      "prohibitedFilePatterns": [
+        "jest.focus.*.config.js",
+        "jest.focus.*.config.*"
+      ],
+      "requiredGeneratorBehavior": "Generators must append to existing spec files when present; must not emit auxiliary config files or alter unrelated project configs."
+    },
+    "detectionRules": {
+      "apiCalls": {
+        "match": ["axios", "fetch(", "HttpClient", "ApiService", "postData", "getData"],
+        "applyPattern": "API_COMM"
+      },
+      "formValidation": {
+        "match": ["FormControl", "form.get", "useForm", "onSubmit", "react-hook-form", "formik", "yup", "joi", "validator"],
+        "applyPattern": "FORM_VALIDATION"
+      },
+      "timers": {
+        "match": ["setTimeout", "setInterval", "jest.advanceTimersByTime", "countdown"],
+        "applyPattern": "PERFORMANCE_EDGE"
+      },
+      "analytics": {
+        "match": ["ga(", "trackEvent", "clickStream", "analyticsService", "gtag(", "dataLayer", "mixpanel"],
+        "applyPattern": "ANALYTICS_TRACKING"
+      },
+      "async": {
+        "match": ["Promise", "async", "await", "Observable", "useEffect", "subscription"],
+        "applyPattern": "ASYNC_STATE"
+      },
+      "i18n": {
+        "match": ["i18n", "translate", "$t(", "useTranslation", "formatMessage", "intl"],
+        "applyPattern": "LOCALIZATION_I18N"
+      },
+      "fileUpload": {
+        "match": ["FileReader", "FormData", "upload", "file input", "drag", "drop"],
+        "applyPattern": "FILE_UPLOAD"
+      },
+      "realtime": {
+        "match": ["WebSocket", "socket.io", "EventSource", "SSE"],
+        "applyPattern": "REAL_TIME"
+      },
+      "pwa": {
+        "match": ["serviceWorker", "navigator.onLine", "offline", "workbox"],
+        "applyPattern": "PWA_OFFLINE"
+      },
+      "security": {
+        "match": ["sanitize", "DOMSanitizer", "xss", "csrf", "innerHTML"],
+        "applyPattern": "SECURITY_SANITIZATION"
+      },
+      "responsive": {
+        "match": ["@media", "breakpoint", "matchMedia", "resize", "viewport"],
+        "applyPattern": "RESPONSIVE_BREAKPOINTS"
+      },
+      "thirdParty": {
+        "match": ["SDK", "widget", "embed", "iframe", "external", "vendor"],
+        "applyPattern": "THIRD_PARTY_INTEGRATION"
+      },
+      "auth": {
+        "match": ["localStorage.getItem('token')", "AuthService", "jwt", "refreshToken"],
+        "applyPattern": "AUTH"
+      },
+      "coverageGaps": {
+        "match": ["coverage report", "uncovered lines", "branch coverage", "lcov"],
+        "applyPattern": "COVERAGE_COMPLETION"
+      }
+    },
+    "testGenerator": {
+      "input": ["filePath", "detectedPatterns", "projectFramework", "coverageTarget"],
+      "process": [
+        "analyze file AST for triggers",
+        "map detected constructs to patterns",
+        "generate test skeletons using pattern templates",
+        "create mocks using mockFactories",
+        "output test file(s) with framework adapter"
+      ],
+      "outputFormats": ["jest (.spec.ts/.spec.js)", "mocha", "playwright/cypress for e2e"]
+    }
+  }
+}

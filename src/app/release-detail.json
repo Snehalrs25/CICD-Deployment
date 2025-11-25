@@ -1,0 +1,78 @@
+{
+  "releases": [
+    {
+      "_id": "69240682a00e29a031fd2150",
+      "module_key": "EMI_SERVICE",
+      "current_version": "13.3.0",
+      "upcoming_version": "13.3.1",
+      "rollout_percent": 20,
+      "release_notes": "New CR",
+      "commit_id": "abc123",
+      "status": "draft",
+      "generated_at": "2025-11-04T10:00:00.000Z",
+      "createdAt": "2025-11-24T07:17:22.279Z",
+      "updatedAt": "2025-11-24T07:17:22.279Z",
+      "__v": 0
+    },
+    {
+      "_id": "691f09bcf14f1fed7202f0bf",
+      "module_key": "EMI_SERVICE",
+      "current_version": "13.3.0",
+      "upcoming_version": "13.3.1",
+      "rollout_percent": 20,
+      "release_notes": "New CR",
+      "commit_id": "abc123",
+      "status": "draft",
+      "generated_at": "2025-11-04T10:00:00.000Z",
+      "createdAt": "2025-11-20T12:29:48.440Z",
+      "updatedAt": "2025-11-20T12:29:48.440Z",
+      "__v": 0
+    },
+    {
+      "_id": "691dbb6abe042cdddb6770e1",
+      "module_key": "EMI_SERVICE",
+      "current_version": "13.3.0",
+      "upcoming_version": "13.3.1",
+      "rollout_percent": 20,
+      "release_notes": "New CR",
+      "commit_id": "abc123",
+      "status": "draft",
+      "generated_at": "2025-11-04T10:00:00.000Z",
+      "createdAt": "2025-11-19T12:43:22.534Z",
+      "updatedAt": "2025-11-19T12:43:22.534Z",
+      "__v": 0
+    },
+    {
+      "_id": "691db5f48601197ebf486b0c",
+      "module_key": "MFI",
+      "current_version": "13.3.0",
+      "upcoming_version": "13.3.1",
+      "rollout_percent": 20,
+      "release_notes": "Minor bug fixes",
+      "status": "draft",
+      "generated_at": "2025-11-19T12:20:04.110Z",
+      "createdAt": "2025-11-19T12:20:04.116Z",
+      "updatedAt": "2025-11-19T12:20:04.116Z",
+      "__v": 0
+    },
+    {
+      "_id": "691db5ef85ff03a5f0e2d779",
+      "module_key": "MFI",
+      "current_version": "13.3.0",
+      "upcoming_version": "13.3.1",
+      "rollout_percent": 20,
+      "release_notes": "Minor bug fixes",
+      "status": "draft",
+      "generated_at": "2025-11-19T12:19:59.451Z",
+      "createdAt": "2025-11-19T12:19:59.462Z",
+      "updatedAt": "2025-11-19T12:19:59.462Z",
+      "__v": 0
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "total": 5,
+    "pages": 1
+  }
+}

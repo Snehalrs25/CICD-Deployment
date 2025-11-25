@@ -1,0 +1,60 @@
+{
+  "patterns": [
+    {
+      "id": "AUTH",
+      "name": "Authentication & Authorization",
+      "triggerIndicators": ["localStorage.getItem('token')", "AuthService", "jwt", "isAuthenticated", "route guard"],
+      "priority": 2,
+      "whatToCover": [
+        "Token read/write from storage (localStorage/sessionStorage/IndexedDB)",
+        "Auth guard / protected route logic",
+        "Expired token handling and refresh flows",
+        "Role-based UI rendering and API access",
+        "Logout clears sensitive data"
+      ],
+      "mocking": ["mock storage APIs", "mock valid/invalid/expired tokens", "mock refresh token endpoint"],
+      "testTemplates": {
+        "tokenFlow": "localStorage.setItem('token', validToken);\nexpect(authService.isAuthenticated()).toBe(true);",
+        "expiredToken": "localStorage.setItem('token', expiredToken);\nawait unitUnderTest();\nexpect(redirectToLogin).toHaveBeenCalled();"
+      },
+      "recommendedCoveragePct": 90
+    },
+    {
+      "id": "STATE_MANAGEMENT",
+      "name": "State Management (NgRx / Redux / Context)",
+      "triggerIndicators": ["store.dispatch(", "createReducer", "useReducer", "ngrx", "redux", "selector"],
+      "priority": 3,
+      "whatToCover": [
+        "Initial state correctness",
+        "Actions cause expected reducer state changes",
+        "Selectors return the right slice",
+        "No accidental mutation (immutability)",
+        "Middleware / effects side-effects (api triggers)"
+      ],
+      "mocking": ["mock store / test store", "mock effects or sagas"],
+      "testTemplates": {
+        "reducer": "expect(reducer(initialState, someAction)).toEqual(expectedState);",
+        "selector": "expect(selectSomeValue(state)).toBe(expected);"
+      },
+      "recommendedCoveragePct": 90
+    },
+    {
+      "id": "LOCAL_STORAGE_CACHE",
+      "name": "Local Storage / IndexedDB / Caching",
+      "triggerIndicators": ["localStorage", "indexedDB", "Cache", "serviceWorker", "caching"],
+      "priority": 3,
+      "whatToCover": [
+        "Write/read correctness",
+        "Cache expiry / TTL behavior",
+        "Fallback to network when cache empty",
+        "Clear / reset functions"
+      ],
+      "mocking": ["mock localStorage", "mock indexedDB adapters"],
+      "testTemplates": {
+        "writeRead": "cache.set('key', 'value');\nexpect(cache.get('key')).toBe('value');",
+        "expiry": "advanceTimeBy(ttl + 1);\nexpect(cache.get('key')).toBeNull();"
+      },
+      "recommendedCoveragePct": 80
+    }
+  ]
+}

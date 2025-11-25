@@ -1,0 +1,71 @@
+{
+  "version": "1.3.0",
+  "description": "Angular API Calling Rules - Detection Only",
+  "rules": [
+    {
+      "id": 1,
+      "rule": "All asynchronous API methods must handle both success and error states via try/catch or RxJS catchError.",
+      "type": "mandatory",
+      "description": "Detect asynchronous API methods that lack proper error handling. Methods must handle errors using try/catch blocks or RxJS catchError operators.",
+      "brief": "Enforce consistent error handling in all async API methods. The autofixer should insert try/catch blocks where missing or ensure RxJS catchError is applied.",
+      "strict": true,
+      "semantic": "This rule ensures that all async API methods handle errors properly. It allows semantic search in the codebase or tool to detect api method and  missing try/catch or catchError ",
+      "example": {
+        "nonCompliant": "async function fetchData() {\n  const response = await api.getData();\n  return response;\n}",
+        "compliant": "async function fetchData() {\n  try {\n    const response = await api.getData();\n    return response;\n  } catch (error) {\n    console.error(error);\n    throw error;\n  }\n}"
+      }
+    },
+    {
+      "id": 2,
+      "rule": "All API calls must reside in Angular services and not directly in components.",
+      "type": "mandatory",
+      "description": "Detect any API calls placed inside Angular components. All API interactions should be encapsulated in services to maintain separation of concerns.",
+      "brief": "Enforce proper Angular architecture by moving API calls from components to services. The autofixer should flag violations and suggest or move logic to services.",
+      "strict": true,
+      "semantic": "This rule ensures that API calls follow Angular best practices by being implemented in services. It allows semantic search to detect misplaced API calls in components.",
+      "example": {
+        "nonCompliant": "export class UserComponent {\n  ngOnInit() {\n    this.http.get('/api/users').subscribe(data => this.users = data);\n  }\n}",
+        "compliant": "export class UserComponent {\n  constructor(private userService: UserService) {}\n  ngOnInit() {\n    this.userService.getUsers().subscribe(data => this.users = data);\n  }\n}"
+      }
+    },
+    {
+      "id": 3,
+      "rule": "All API calls must use async/await syntax instead of raw Promises.",
+      "type": "mandatory",
+      "description": "Detect any Promise-based API calls that are not using async/await syntax. This ensures consistent and readable asynchronous code.",
+      "brief": "Enforce the use of async/await for all API calls. The autofixer should convert Promise-based code to async/await where missing.",
+      "strict": true,
+      "semantic": "This rule ensures all API calls use async/await for cleaner, more maintainable asynchronous code. It enables semantic search to detect missing async/await usage.",
+      "example": {
+        "nonCompliant": "function fetchData() {\n  api.getData().then(response => console.log(response));\n}",
+        "compliant": "async function fetchData() {\n  const response = await api.getData();\n  console.log(response);\n}"
+      }
+    },
+    {
+      "id": 4,
+      "rule": "All API responses must have properly defined TypeScript types or interfaces.",
+      "type": "mandatory",
+      "description": "Detect any API responses that are missing TypeScript return types or interfaces. Every function handling API data must explicitly define a return type.",
+      "brief": "Enforce explicit TypeScript types or interfaces for all API responses. The autofixer should add missing return types where absent. for functions only and see retun type then only it should be complient",
+      "strict": true,
+      "semantic": "This rule ensures type safety and maintainable code by enforcing explicit TypeScript return types for all API responses. Semantic search can detect missing or undefined return types.",
+      "example": {
+        "nonCompliant": "async function fetchUser() {\n  const response = await api.getUser();\n  return response;\n}",
+        "compliant": "async function fetchUser(): User {\n  const response = await api.getUser();\n  return response;\n}"
+      }
+    },
+    {
+      "id": 5,
+      "rule": "Do not hardcode API URLs or keys in components; always use environment files or configuration services.",
+      "type": "mandatory",
+      "description": "Detect any hardcoded API URLs, endpoints, or keys in Angular components. All such values must be stored in environment files or configuration services.",
+      "brief": "Enforce proper configuration management by replacing hardcoded URLs or keys with environment variables or config services. The autofixer should detect and suggest proper replacements.",
+      "strict": true,
+      "semantic": "This rule ensures secure and maintainable code by preventing hardcoded API URLs or keys in components. Semantic search can detect all occurrences of hardcoded values.",
+      "example": {
+        "nonCompliant": "export class UserComponent {\n  apiUrl = 'https://api.example.com/users';\n}",
+        "compliant": "export class UserComponent {\n  apiUrl = environment.apiUrl;\n}"
+      }
+    }
+  ]
+}

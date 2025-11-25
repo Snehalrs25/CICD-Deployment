@@ -1,0 +1,311 @@
+.login-page {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.login-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* Left Section - 833px width */
+.left-section {
+  position: relative;
+  width: 833px;
+  height: 1024px;
+  background: linear-gradient(135deg, rgba(61, 75, 147, 1) 0%, rgba(97, 69, 149, 1) 50%, rgba(110, 62, 145, 1) 100%);
+  overflow: hidden;
+
+  .gradient-rectangle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(61, 75, 147, 1) 0%, rgba(97, 69, 149, 1) 50%, rgba(110, 62, 145, 1) 100%);
+  }
+
+  .gradient-blur-circle {
+    position: absolute;
+    top: -170px;
+    left: 245px;
+    width: 586px;
+    height: 586px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(61, 75, 147, 1) 0%, rgba(97, 69, 149, 1) 50%, rgba(110, 62, 145, 1) 100%);
+    filter: blur(400px);
+    opacity: 0.14;
+  }
+
+  .branding-content {
+    position: relative;
+    z-index: 10;
+    padding: 214px 137px 0 137px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .icons-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: 24px;
+    position: relative;
+
+    .icon {
+      position: absolute;
+    }
+
+    .icon-1 {
+      width: 149px;
+      height: 125px;
+      left: -75px;
+      top: 17px;
+    }
+
+    .icon-2 {
+      width: 172px;
+      height: 172px;
+      left: 104px;
+      top: -144px;
+    }
+
+    .icon-3 {
+      width: 290px;
+      height: 148px;
+      right: -112px;
+      top: 0;
+    }
+  }
+
+  .main-image {
+    width: 518px;
+    height: 290px;
+    margin-bottom: 24px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .doctor-illustration {
+    position: absolute;
+    width: 252px;
+    height: 282px;
+    left: 130px;
+    top: 52px;
+    z-index: 3;
+  }
+
+  h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    line-height: 39px;
+    text-align: center;
+    color: #FFFFFF;
+    margin: 24px 0 10px 0;
+    max-width: 558px;
+  }
+
+  p {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    text-align: center;
+    color: #DED9D9;
+    max-width: 542px;
+    margin: 0;
+  }
+}
+
+/* Right Section - 607px width */
+.right-section {
+  flex: 1;
+  background: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 122px;
+}
+
+.login-card {
+  width: 362px;
+
+  .heading-large {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 48px;
+    color: #000000;
+    margin: 0 0 64px 0;
+  }
+
+  .login-form {
+    .form-field {
+      margin-bottom: 16px;
+
+      label {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 21px;
+        color: #000000;
+        display: block;
+        margin-bottom: 2px;
+      }
+
+      .input-wrapper {
+        position: relative;
+
+        ::ng-deep .mat-mdc-form-field {
+          width: 100%;
+          
+          .mat-mdc-text-field-wrapper {
+            width: 100%;
+          }
+
+          .mdc-text-field {
+            background: #FFFFFF;
+            border-radius: 8px;
+            padding: 0;
+            
+            .mat-mdc-form-field-flex {
+              height: 48px;
+            }
+          }
+
+          .mdc-notched-outline {
+            .mdc-notched-outline__leading,
+            .mdc-notched-outline__notch,
+            .mdc-notched-outline__trailing {
+              border-color: #B0C8E2;
+              border-width: 2px;
+            }
+          }
+
+          &.mat-focused {
+            .mdc-notched-outline {
+              .mdc-notched-outline__leading,
+              .mdc-notched-outline__notch,
+              .mdc-notched-outline__trailing {
+                border-color: #3D4B93;
+              }
+            }
+          }
+
+          input {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 16px;
+            color: #031931;
+            padding: 14px 16px;
+
+            &::placeholder {
+              color: #031931;
+              opacity: 0.5;
+            }
+          }
+        }
+
+        .error-message {
+          font-family: 'Poppins', sans-serif;
+          font-size: 12px;
+          line-height: 18px;
+          color: #f44336;
+          margin-top: 4px;
+          display: block;
+        }
+      }
+
+      &:last-of-type {
+        margin-bottom: 20px;
+      }
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+
+      .checkbox-wrapper {
+        ::ng-deep .mat-mdc-checkbox {
+          .mdc-checkbox {
+            width: 20px;
+            height: 20px;
+          }
+
+          .mdc-checkbox__background {
+            width: 20px;
+            height: 20px;
+          }
+
+          .mdc-form-field {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 18px;
+            color: #000000;
+          }
+        }
+      }
+
+      .forgot-password {
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 16px;
+        color: #3D4B93;
+        text-decoration: none;
+        cursor: pointer;
+        transition: opacity 0.3s ease;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    .primary-button {
+      margin-top: 0;
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1440px) {
+  .left-section {
+    width: 58%;
+  }
+  
+  .right-section {
+    flex: 1;
+    padding: 0 60px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .login-container {
+    flex-direction: column;
+  }
+
+  .left-section {
+    width: 100%;
+    min-height: 400px;
+    
+    .branding-content {
+      padding: 80px 40px;
+    }
+  }
+
+  .right-section {
+    width: 100%;
+    padding: 40px;
+  }
+}

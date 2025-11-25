@@ -1,0 +1,38 @@
+{
+  "patterns": [
+    {
+      "id": "PERFORMANCE_EDGE",
+      "name": "Performance & Edge Conditions",
+      "triggerIndicators": ["debounce", "throttle", "setTimeout", "setInterval", "largeList", "virtualize"],
+      "priority": 5,
+      "whatToCover": [
+        "Debounce / throttle correctness",
+        "Timers cleared on destroy/unmount",
+        "Large input / payload handling",
+        "Memory leaks (subscription cleanup)"
+      ],
+      "mocking": ["use fake timers (jest.useFakeTimers)"],
+      "testTemplates": {
+        "timer": "jest.useFakeTimers();\ncomponent.startCountdown();\njest.advanceTimersByTime(5000);\nexpect(component.count).toBe(expected);"
+      },
+      "recommendedCoveragePct": 70
+    },
+    {
+      "id": "DOM_A11Y",
+      "name": "DOM & Accessibility (a11y)",
+      "triggerIndicators": ["aria-", "alt=", "role=", "tabIndex", "label", "aria-label"],
+      "priority": 6,
+      "whatToCover": [
+        "Elements have accessible labels and roles",
+        "Keyboard navigation works (tab / enter)",
+        "Images have alt text",
+        "No duplicate IDs or focus traps"
+      ],
+      "mocking": ["DOM helpers", "screen / queries (testing-library)"],
+      "testTemplates": {
+        "a11y": "expect(screen.getByRole('button', {name: /submit/i})).toBeInTheDocument();\nexpected(screen.getByLabelText('Email')).toBeTruthy();"
+      },
+      "recommendedCoveragePct": 60
+    }
+  ]
+}

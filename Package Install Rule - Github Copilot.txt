@@ -1,0 +1,63 @@
+GitHub copilot rule file 
+
+RULE : 
+---
+applyTo: "**"
+---
+# Package Installation Strategy Rules
+
+## Before Installing Any Package
+
+### 1. Research the Package Thoroughly
+
+Go to the package's official website or package provider website (npm, PyPI, Maven Central, etc.) and thoroughly review the following critical points:
+
+#### Key Points to Check
+
+- **Official Documentation**: Read through the complete README and documentation to understand the package's purpose and scope
+- **License**: Verify the license type is compatible with your project requirements (MIT, Apache 2.0, GPL, etc.)
+- **Active Maintenance**: Check the last update date and maintenance status—avoid abandoned packages
+- **Community Support**: Review the issue tracker, discussions, and how responsive maintainers are to problems
+- **Popularity & Adoption**: Check download statistics, stars, and how widely it's used in the industry
+- **Security History**: Look for any reported security vulnerabilities using resources like npm audit, Snyk, or CVE databases
+- **Dependencies**: Review what dependencies the package brings in (transitive dependencies)
+- **Bundle Size Impact**: Check the package size and impact on your final bundle (use bundlephobia, npm trends, or similar tools)
+- **Performance**: Research known performance issues or benchmarks if performance is critical
+- **Browser/Runtime Support**: Verify compatibility with your target environments and versions
+- **TypeScript Support**: If applicable, confirm TypeScript definitions are available (native or @types)
+- **API Stability**: Check if the API is stable or still in alpha/beta stage
+- **Migration Path**: Review the changelog to understand how frequently breaking changes occur
+- **Alternative Options**: Compare with similar packages to ensure it's the best choice for your use case
+
+### 2. Assessment Checklist
+
+- [ ] Official documentation reviewed
+- [ ] License compatibility verified
+- [ ] Maintenance status confirmed (active)
+- [ ] Community engagement assessed
+- [ ] Security vulnerabilities checked
+- [ ] Bundle size impact evaluated
+- [ ] Dependencies reviewed and accepted
+- [ ] Performance considerations addressed
+- [ ] Environment compatibility confirmed
+- [ ] Migration costs understood
+- [ ] If needed do initial setup for package
+
+### 3. Decision Criteria
+
+Only proceed with installation if:
+- The package is actively maintained and stable
+- No critical security vulnerabilities are present
+- The bundle size impact is acceptable
+- The API surface aligns with your project needs
+- It solves a genuine problem better than alternatives
+- The learning curve and integration effort is justified
+
+### 4. Documentation & Reference
+
+After installing, document:
+- Why this specific package was chosen
+- Guide how to use package in project (markdown file, with name like <package-name>-package-guide.md)
+- Known limitations or considerations
+- Version pinning strategy (if needed)
+- Alternative packages considered and rejected

@@ -1,0 +1,19 @@
+{
+  "qualityAndCI": {
+    "coverageEnforcement": {
+      "default": "90",
+      "advice": "Set per-repo thresholds in CI; allow exemptions for legacy files with documented rationale."
+    },
+    "ciSteps": [
+      "Run lint",
+      "Run unit tests with coverage",
+      "Fail build if coverage below threshold",
+      "Upload coverage report (lcov/json)",
+      "Run e2e tests on merged branches"
+    ],
+    "reporting": {
+      "format": ["text", "lcov", "json"],
+      "tools": ["codecov", "coveralls"]
+    }
+  }
+}

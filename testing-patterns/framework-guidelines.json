@@ -1,0 +1,12 @@
+{
+  "frameworkGuidelines": {
+    "preferredUnitRunners": ["jest", "mocha"],
+    "preferredE2ERunners": ["cypress", "playwright"],
+    "uiTestingLibraries": {
+      "angular": ["@angular/core/testing (TestBed)", "jest (Direct Instantiation)"],
+      "react": ["@testing-library/react", "enzyme (legacy)"],
+      "node": ["supertest (for express endpoints)", "jest"]
+    },
+    "mockingLibraries": ["jest.fn / jest.mock", "sinon (optional)", "msw (network mocking)", "nock (node http)"]
+  }
+}

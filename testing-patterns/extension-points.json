@@ -1,0 +1,24 @@
+{
+  "extensionPoints": {
+    "frameworkAdapters": {
+      "angular": {
+        "notes": "Map generic patterns to TestBed or Direct Instantiation. Prefer mocks for services; TestBed only when template interactions or DI edge cases needed."
+      },
+      "react": {
+        "notes": "Map to React Testing Library for DOM assertions; use jest mocks for hooks and axios/fetch."
+      },
+      "node": {
+        "notes": "Map API_COMM patterns to supertest or jest + nock, focusing on route handlers or service methods."
+      }
+    },
+    "customPatterns": {
+      "structure": {
+        "id": "<CUSTOM_ID>",
+        "name": "<Custom Name>",
+        "trigger": "<code pattern trigger>",
+        "priority": 1,
+        "template": "<test skeleton template>"
+      }
+    }
+  }
+}

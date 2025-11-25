@@ -1,0 +1,55 @@
+{
+  "patterns": [
+    {
+      "id": "ROUTING_NAV",
+      "name": "Routing & Navigation",
+      "triggerIndicators": ["Router", "useHistory", "navigate", "route params", "ActivatedRoute", "useRouter"],
+      "priority": 3,
+      "whatToCover": [
+        "Correct component loaded for a route",
+        "Guards/redirects behavior",
+        "Param and query string extraction",
+        "404 / fallback redirects"
+      ],
+      "mocking": ["mock router implementation", "spy on navigation functions"],
+      "testTemplates": {
+        "guardPass": "mockAuth(true);\nexpect(navigateTo).not.toHaveBeenCalledWith('/login');",
+        "params": "mockRouteParams({id: '123'});\nexpect(component.id).toBe('123');"
+      },
+      "recommendedCoveragePct": 80
+    },
+    {
+      "id": "ERROR_LOGGING",
+      "name": "Error Handling & Logging",
+      "triggerIndicators": ["try", "catch", "globalErrorHandler", "console.error", "Sentry", "logError"],
+      "priority": 4,
+      "whatToCover": [
+        "Global error handler captures uncaught errors",
+        "API/UI errors are shown to users correctly",
+        "No sensitive/Pii data in logs",
+        "Logging integration calls (Sentry, custom logger)"
+      ],
+      "mocking": ["spy on console methods", "mock logger service"],
+      "testTemplates": {
+        "globalError": "throw new Error('boom');\nexpect(logger.capture).toHaveBeenCalledWith(expect.objectContaining({message:'boom'}));"
+      },
+      "recommendedCoveragePct": 80
+    },
+    {
+      "id": "CONFIG_ENV",
+      "name": "Configuration & Environment Handling",
+      "triggerIndicators": ["process.env", "environment.ts", "window.__ENV__", "FEATURE_FLAG"],
+      "priority": 4,
+      "whatToCover": [
+        "Environment variables loaded correctly per env",
+        "Feature flags toggle behavior",
+        "Fallback defaults when env keys missing"
+      ],
+      "mocking": ["mock process.env or environment object"],
+      "testTemplates": {
+        "env": "mockEnv({API_URL: 'http://test'});\nexpect(config.apiUrl).toBe('http://test');"
+      },
+      "recommendedCoveragePct": 80
+    }
+  ]
+}

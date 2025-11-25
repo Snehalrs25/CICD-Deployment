@@ -1,0 +1,92 @@
+<div class="login-page">
+  <app-header></app-header>
+  
+  <div class="login-container">
+    <!-- Left Section -->
+    <div class="left-section">
+      <div class="gradient-rectangle"></div>
+      <div class="gradient-blur-circle"></div>
+      
+      <!-- Branding Section -->
+      <div class="branding-content">
+        <div class="icons-row">
+          <img src="assets/images/icon-1.svg" alt="Icon 1" class="icon icon-1">
+          <img src="assets/images/icon-2.svg" alt="Icon 2" class="icon icon-2">
+          <img src="assets/images/icon-3.svg" alt="Icon 3" class="icon icon-3">
+        </div>
+        
+        <img src="assets/images/main-image-776b54.png" alt="Healthcare Illustration" class="main-image">
+        <img src="assets/images/doctor-illustration.svg" alt="Doctor" class="doctor-illustration">
+        
+        <h1 class="heading-medium">Leading Health Maintenance Organization</h1>
+        <p class="body-text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</p>
+      </div>
+    </div>
+
+    <!-- Right Section -->
+    <div class="right-section">
+      <div class="login-card">
+        <h2 class="heading-large">Login</h2>
+        
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+          <!-- Email Field -->
+          <div class="form-field">
+            <label for="email">Email ID</label>
+            <div class="input-wrapper">
+              <mat-form-field appearance="outline" class="full-width">
+                <input 
+                  matInput 
+                  id="email"
+                  type="email" 
+                  formControlName="email"
+                  placeholder="Userlogin@gmail.com"
+                  [class.error]="email?.invalid && email?.touched">
+              </mat-form-field>
+              <span class="error-message" *ngIf="email?.invalid && email?.touched">
+                <span *ngIf="email?.errors?.['required']">Email is required</span>
+                <span *ngIf="email?.errors?.['email']">Please enter a valid email</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="form-field">
+            <label for="password">Password</label>
+            <div class="input-wrapper">
+              <mat-form-field appearance="outline" class="full-width">
+                <input 
+                  matInput 
+                  id="password"
+                  [type]="hidePassword ? 'password' : 'text'"
+                  formControlName="password"
+                  placeholder="9854216379"
+                  [class.error]="password?.invalid && password?.touched">
+              </mat-form-field>
+              <span class="error-message" *ngIf="password?.invalid && password?.touched">
+                <span *ngIf="password?.errors?.['required']">Password is required</span>
+                <span *ngIf="password?.errors?.['minlength']">Password must be at least 6 characters</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Remember Me & Forgot Password -->
+          <div class="form-actions">
+            <div class="checkbox-wrapper">
+              <mat-checkbox formControlName="rememberMe" color="primary">
+                Remember me
+              </mat-checkbox>
+            </div>
+            <a href="#" class="link forgot-password">Forgot password?</a>
+          </div>
+
+          <!-- Login Button -->
+          <button type="submit" class="primary-button" [disabled]="loginForm.invalid">
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,28 @@
+{
+  "examples": {
+    "apiTestSkeleton": {
+      "name": "should map API response to model on success and set error on server error",
+      "steps": [
+        "Arrange: create mock success response and mock error response",
+        "Act: call component.methodThatCallsApi()",
+        "Assert: on success mappedModel equals expectedModel; on error component.errorState === true"
+      ],
+      "pseudocode": "mockApi.call.mockResolvedValue(mockSuccess); await sut(); expect(sut.model).toEqual(expectedModel); mockApi.call.mockRejectedValue({status:500}); await sut(); expect(sut.error).toBe(true);"
+    },
+    "componentTestSkeleton": {
+      "name": "should render with correct props and handle click",
+      "steps": ["Render component with props", "Simulate click", "Assert event handler called and state changed"],
+      "pseudocode": "render(<C propA='x' />); fireEvent.click(getByText('Save')); expect(handleSave).toHaveBeenCalledWith(expectedArgs);"
+    },
+    "coverageGapTestSkeleton": {
+      "name": "should cover uncovered branch when specific condition met",
+      "steps": [
+        "Identify the uncovered branch from coverage report",
+        "Set up minimal state to trigger that branch",
+        "Execute the method containing the branch",
+        "Assert the branch-specific behavior occurred"
+      ],
+      "pseudocode": "// For uncovered: if (!data) return null;\nexpect(component.processData(null)).toBe(null);"
+    }
+  }
+}

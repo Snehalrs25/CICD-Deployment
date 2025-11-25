@@ -1,0 +1,17 @@
+{
+  "copilotPromptTemplates": {
+    "short": "Generate unit tests for {filePath}. Cover API success & error flows, UI render states (loading/empty/error), event handlers, utilities' edge cases, auth/storage behaviors, and environment config. Use mocks for HTTP and storage. Target coverage: {coverageTarget}% and prefer {framework}.",
+    "detailed": "You are a test-generator. For the file {filePath} in a {framework} project, generate unit tests using {testRunner}. Requirements:\n1) Cover API calls: success (200), client errors (4xx), server errors (5xx), network/timeouts, interceptors, and auth header injection (mock tokens).\n2) Cover component/UI: render, props/input binding, event handlers, conditional render branches, loading/empty/error states, accessibility assertions.\n3) Cover utilities: pure functions with edge cases (null/undefined/invalid), date/time functions (mock Date), encryption/decryption (mock keys).\n4) Cover auth: storage read/write, expired token flows, logout clearing sensitive data.\n5) Cover routing: parameter handling, guards, redirects.\n6) Use mocks for HTTP, localStorage, router, and store. Use fake timers for timer-based logic.\n7) Create one test per logical assertion, follow naming: 'should {action} when {condition}'.\n8) Provide mocks and fixtures inline. Aim for at least {coverageTarget}% coverage. Output only the test file content (no extra explanation).",
+    "coverageGap": "Analyze the coverage report for {filePath}. Identify uncovered branches and generate minimal tests to cover each gap. For each uncovered line, create a focused test that exercises that specific branch. Use existing mocks and follow the pattern: 'should cover {branch description} when {specific condition}'. Focus on conditional statements, error handlers, guard clauses, and default parameters that aren't being tested.",
+    "examples": [
+      {
+        "description": "API success/fail test (Jest pseudocode)",
+        "promptSnippet": "mockApi.get.mockResolvedValue({data: {...}, status:200}); await component.load(); expect(component.data).toEqual(expected); mockApi.get.mockRejectedValue({status:500}); await component.load(); expect(component.error).toBeTruthy();"
+      },
+      {
+        "description": "Branch coverage gap test",
+        "promptSnippet": "// Coverage shows line 45 uncovered: if (user.role === 'admin')\nit('should handle admin role branch', () => {\n  component.user = {role: 'admin'};\n  component.checkPermissions();\n  expect(component.hasAdminAccess).toBe(true);\n});"
+      }
+    ]
+  }
+}

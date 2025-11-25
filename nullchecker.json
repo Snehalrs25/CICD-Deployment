@@ -1,0 +1,58 @@
+{
+    "version": "1.4.1",
+    "description": "Angular API Null Safety Rules - Detection + Optional Chaining Enhancements",
+    "rules": [
+        {
+            "id": 1,
+            "rule": "All API responses must be checked for null, undefined, or safely accessed using optional chaining (?.) or nullish coalescing (??).",
+            "type": "mandatory",
+            "description": "Detect cases where API responses are directly used without checking for null or undefined values. Encourage the use of optional chaining (?.) and nullish coalescing (??) for safe access and default fallback values.",
+            "brief": "Ensure every API response is guarded against null/undefined — either by explicit checks, optional chaining (?.), or nullish coalescing (??).",
+            "strict": true,
+            "semantic": "This rule ensures that every API call response includes null safety handling using conditionals or TypeScript’s built-in operators (?. and ??). Prevents runtime errors from unsafe property access.",
+            "example": {
+                "nonCompliant": "this.http.get('/api/users').subscribe(data => console.log(data.name));",
+                "compliant": "this.http.get('/api/users').subscribe(response => {\n  if (response != null && response !== undefined) {\n    console.log(response?.name ?? 'Unknown');\n  }\n});"
+            }
+        },
+        {
+            "id": 2,
+            "rule": "Ensure all async/await API functions use null checks or optional chaining before returning or using data.",
+            "type": "mandatory",
+            "description": "Detect async functions using API data directly without verifying the response is non-null. Encourage the use of optional chaining (?.) and nullish coalescing (??) before property access or return.",
+            "brief": "Async/await API responses must perform null/undefined validation or use ?. / ?? operators for safe property access.",
+            "strict": true,
+            "semantic": "This rule enforces that async functions safely handle possibly null API responses, preventing unsafe dereferencing.",
+            "example": {
+                "nonCompliant": "async function getUser() {\n  const res = await api.getUser();\n  return res.name;\n}",
+                "compliant": "async function getUser() {\n  const res = await api.getUser();\n  if (!res) throw new Error('Null or undefined response');\n  return res?.name ?? 'Anonymous';\n}"
+            }
+        },
+        {
+            "id": 3,
+            "rule": "All Angular service methods must guard against null/undefined responses or use optional chaining before returning to components.",
+            "type": "mandatory",
+            "description": "Detect service methods that return API results directly without validation. Service methods should handle null checks or use optional chaining internally before returning data.",
+            "brief": "Ensure Angular services perform null checks or use ?. / ?? before emitting or returning data to components.",
+            "strict": true,
+            "semantic": "Promotes defensive programming in Angular services — guaranteeing null safety through validation or modern TS null-handling operators.",
+            "example": {
+                "nonCompliant": "getUsers() {\n  return this.http.get<User[]>('/api/users');\n}",
+                "compliant": "getUsers() {\n  return this.http.get<User[]>('/api/users').pipe(\n    map(res => res ?? []),\n    map(users => users?.map(u => u?.name ?? 'Unknown')),\n    catchError(() => of([]))\n  );\n}"
+            }
+        },
+        {
+            "id": 4,
+            "rule": "All API response parameters must be accessed using optional chaining (?.).",
+            "type": "mandatory",
+            "description": "Enforce that whenever an API response object is used, all of its properties should be accessed with optional chaining to avoid runtime errors if the object is null or undefined.",
+            "brief": "Access all API response properties safely using ?. operator, e.g., resp?.id.",
+            "strict": true,
+            "semantic": "Prevents unsafe property access on potentially null or undefined API responses. Encourages consistent use of optional chaining across the codebase.",
+            "example": {
+                "nonCompliant": "this.http.get('/api/users').subscribe(resp => console.log(resp.id));",
+                "compliant": "this.http.get('/api/users').subscribe(resp => console.log(resp?.id));"
+            }
+        }
+    ]
+}

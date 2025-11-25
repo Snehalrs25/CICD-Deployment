@@ -1,0 +1,10 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "created": "2025-10-08",
+    "purpose": "Generic testing pattern for frontend projects (Angular / React / Node front-end code). Designed to be used as input for automated test generators or Copilot-style prompts.",
+    "scope": ["angular", "react", "node"],
+    "defaultCoverageTargetPct": 90,
+    "notes": "This pattern is framework-agnostic; use framework adapters section to map to specific test runners/libraries."
+  }
+}

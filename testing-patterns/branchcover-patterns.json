@@ -1,0 +1,38 @@
+{
+  "patterns": [
+    {
+      "id": "ANGULAR_BRANCH_COVERAGE",
+      "name": "Angular Conditional Logic & Branch Coverage",
+      "triggerIndicators": ["if", "else", "switch", "try", "catch", "resolve", "reject", "return"],
+      "priority": 1,
+      "whatToCover": [
+        "All conditional branches (if/else, switch, ternary, early return)",
+        "Promise resolve/reject and async/await behavior",
+        "Error handling in catch blocks",
+        "Console logs and debug paths",
+        "Dependency calls and fallback paths",
+        "Edge cases for null, undefined, and default values"
+      ],
+      "mocking": [
+        "Mock dependencies such as Router, StorageService, ApiService, HttpClient",
+        "Use jest.spyOn or jasmine.createSpy for service and API calls",
+        "Mock resolved and rejected Promise responses",
+        "Mock console.log to verify debug branches"
+      ],
+      "testTemplates": {
+        "positiveCase": "jest.spyOn(apiService, 'getData').mockResolvedValue(mockData);\nawait service.loadData();\nexpect(service.data).toEqual(mockData);",
+        "negativeCase": "jest.spyOn(apiService, 'getData').mockRejectedValue(new Error('Network error'));\nawait service.loadData();\nexpect(console.error).toHaveBeenCalledWith('Network error');",
+        "branchCoverage": "if (condition) { service.handleTrue(); } else { service.handleFalse(); }\nexpect(service.handleTrue).toHaveBeenCalledTimes(1);",
+        "earlyReturn": "jest.spyOn(service, 'processData');\nservice.calculate(null);\nexpect(service.processData).not.toHaveBeenCalled();",
+        "switchCase": "service.handleType('A');\nexpect(service.result).toBe('Type A handled');\nservice.handleType('default');\nexpect(service.result).toBe('Default handled');"
+      },
+      "coverageStrategy": {
+        "step1": "Write Jest tests for all if/else, switch, and try/catch blocks.",
+        "step2": "Run Jest coverage report for the specific file.",
+        "step3": "Identify uncovered branches and add tests for each scenario.",
+        "step4": "Ensure 100% branch coverage before committing."
+      },
+      "recommendedCoveragePct": 100
+    }
+  ]
+}

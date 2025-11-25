@@ -1,0 +1,79 @@
+{
+  "patterns": [
+    {
+      "id": "API_COMM",
+      "name": "API Communication Layer",
+      "triggerIndicators": ["fetch(", "axios", "HttpClient", "ApiService", "/api/"],
+      "priority": 1,
+      "whatToCover": [
+        "API call success (200) — correct data mapping to models",
+        "Client error (4xx) — error handling & user-visible message",
+        "Server error (5xx) — fallback and retry logic",
+        "Network error / timeout — retries & graceful degradation",
+        "Interceptor/middleware behavior (auth injection, logging)",
+        "Response schema validation / mapping to typed models"
+      ],
+      "mocking": [
+        "mockHttpClient (Angular HttpClient or axios stub)",
+        "mockFetch (global fetch stub)",
+        "msw or nock for integration-style tests",
+        "spy/stub on API methods"
+      ],
+      "testTemplates": {
+        "success": "mockApi.method.mockResolvedValue(mockSuccessResponse);\nawait unitUnderTest();\nexpect(mappedResult).toEqual(expectedModel);",
+        "error": "mockApi.method.mockRejectedValue({status:500, message:'Server error'});\nawait unitUnderTest();\nexpect(handleError).toHaveBeenCalled();",
+        "authHeader": "mockHttp.intercept.mockImplementation((req) => {\n  expect(req.headers['Authorization']).toBe('Bearer <token>');\n});"
+      },
+      "automationHints": {
+        "detect": ["files with 'Service' suffix", "calls to axios/fetch/HttpClient", "import of '/api/' endpoints"],
+        "applyPattern": "apiResponseTesting"
+      },
+      "recommendedCoveragePct": 90
+    },
+    {
+      "id": "COMPONENT_UI",
+      "name": "Component / UI Logic",
+      "triggerIndicators": ["render(", "component", "useState", "FormGroup", "props", "template", "tsx", ".jsx"],
+      "priority": 1,
+      "whatToCover": [
+        "Component renders without error",
+        "Input/props binding and output/events",
+        "Event handling (clicks, submits, keyboard)",
+        "Conditional rendering variants (data present, empty, error)",
+        "Loading state and spinner behavior",
+        "Re-render/change detection correctness",
+        "Accessibility basics (aria attributes, labels)"
+      ],
+      "mocking": ["mock services/hooks", "mock child components", "mock DOM APIs (ElementRef)"],
+      "testTemplates": {
+        "render": "render(<Component {...defaultProps} />);\nexpect(screen.getByText('Expected text')).toBeInTheDocument();",
+        "event": "fireEvent.click(screen.getByRole('button', {name:'Save'}));\nexpect(mockedHandler).toHaveBeenCalled();",
+        "states": "/* test loading, success, empty, error */"
+      },
+      "automationHints": {
+        "detect": ["JSX/TSX files", "Angular templates", "usage of form controls", "onClick/onSubmit handlers"],
+        "applyPattern": "componentInstantiation"
+      },
+      "recommendedCoveragePct": 90
+    },
+    {
+      "id": "BUSINESS_LOGIC",
+      "name": "Business Logic / Utilities / Helpers",
+      "triggerIndicators": ["utils/", "helpers/", "formatDate", "validate", "encrypt", "decrypt"],
+      "priority": 2,
+      "whatToCover": [
+        "Pure functions—deterministic input => expected output",
+        "Edge cases: null, undefined, empty, malformed inputs",
+        "Validation, parsing, formatting functions",
+        "Encryption/decryption flows (mock keys)",
+        "Date/time functions (use mocked Date or time lib)"
+      ],
+      "mocking": ["none or light mocking of dependencies", "mock Date.now() or timezone"],
+      "testTemplates": {
+        "pureFn": "expect(formatter('2025-10-08')).toBe('08 Oct 2025');",
+        "edgeCase": "expect(validator(null)).toBe(false);"
+      },
+      "recommendedCoveragePct": 100
+    }
+  ]
+}

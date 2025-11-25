@@ -1,0 +1,9 @@
+{
+  "howToUse": [
+    "1) Run static detector to map files to patterns using automation.detectionRules.",
+    "2) For each file, fill placeholders {filePath}, {framework}, {coverageTarget} in copilotPromptTemplates.detailed.",
+    "3) Ask Copilot/LLM to generate tests using the detailed prompt; apply frameworkAdapter transformations if needed.",
+    "4) Inject mockFactories into generated tests.",
+    "5) Run tests locally and enforce coverage via CI."
+  ]
+}

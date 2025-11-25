@@ -1,0 +1,241 @@
+{
+  "patterns": [
+    {
+      "id": "ANALYTICS_TRACKING",
+      "name": "Analytics & Event Tracking",
+      "triggerIndicators": ["ga(", "gtag(", "trackEvent", "analytics", "dataLayer", "fbq(", "mixpanel"],
+      "priority": 4,
+      "whatToCover": [
+        "Event tracking calls with correct parameters",
+        "User journey funnels and conversion events",
+        "Page view tracking on route changes",
+        "Custom properties and dimensions",
+        "Privacy compliance (opt-out scenarios)",
+        "A/B test variant tracking"
+      ],
+      "mocking": ["spy on analytics methods", "mock analytics libraries", "mock dataLayer"],
+      "testTemplates": {
+        "trackEvent": "mockAnalytics.track = jest.fn();\ncomponent.onButtonClick();\nexpect(mockAnalytics.track).toHaveBeenCalledWith('button_clicked', {category: 'engagement'});",
+        "pageView": "mockGtag = jest.fn();\nnavigateToPage('/dashboard');\nexpect(mockGtag).toHaveBeenCalledWith('config', 'GA_ID', {page_path: '/dashboard'});"
+      },
+      "recommendedCoveragePct": 85
+    },
+    {
+      "id": "FORM_VALIDATION",
+      "name": "Form Validation & Input Handling",
+      "triggerIndicators": ["validator", "FormControl", "validation", "useFormik", "yup", "joi", "react-hook-form"],
+      "priority": 2,
+      "whatToCover": [
+        "Required field validation messages",
+        "Format validation (email, phone, regex patterns)",
+        "Custom validator functions",
+        "Cross-field validation dependencies",
+        "Dynamic validation rule changes",
+        "Submit prevention when form invalid",
+        "Real-time vs submit-time validation"
+      ],
+      "mocking": ["mock validation libraries", "spy on validation functions"],
+      "testTemplates": {
+        "required": "component.form.get('email').setValue('');\nexpect(component.form.get('email').errors?.['required']).toBeTruthy();",
+        "format": "component.form.get('email').setValue('invalid-email');\nexpected(component.form.get('email').errors?.['email']).toBeTruthy();",
+        "submit": "component.form.markAllAsTouched();\ncomponent.onSubmit();\nexpect(apiCall).not.toHaveBeenCalled();"
+      },
+      "recommendedCoveragePct": 95
+    },
+    {
+      "id": "ASYNC_STATE",
+      "name": "Async State Management & Race Conditions",
+      "triggerIndicators": ["Promise", "async", "await", "Observable", "useEffect", "subscription", "race condition"],
+      "priority": 3,
+      "whatToCover": [
+        "Loading states during async operations",
+        "Race condition handling (cancel previous requests)",
+        "Retry logic and exponential backoff",
+        "Concurrent request deduplication",
+        "Subscription cleanup on unmount/destroy",
+        "Promise rejection handling",
+        "Timeout scenarios"
+      ],
+      "mocking": ["control Promise resolution timing", "mock subscription cleanup", "use fake timers"],
+      "testTemplates": {
+        "loading": "const promise = component.loadData();\nexpect(component.loading).toBe(true);\nawait promise;\nexpect(component.loading).toBe(false);",
+        "raceCondition": "const req1 = component.search('query1');\nconst req2 = component.search('query2');\nawait req2;\nexpect(component.results).toEqual(query2Results);",
+        "cleanup": "component.ngOnInit();\ncomponent.ngOnDestroy();\nexpected(mockSubscription.unsubscribe).toHaveBeenCalled();"
+      },
+      "recommendedCoveragePct": 85
+    },
+    {
+      "id": "LOCALIZATION_I18N",
+      "name": "Internationalization & Localization",
+      "triggerIndicators": ["i18n", "translate", "locale", "$t(", "useTranslation", "formatMessage", "intl"],
+      "priority": 4,
+      "whatToCover": [
+        "Translation key resolution for different locales",
+        "Fallback to default language when key missing",
+        "Number and date formatting per locale",
+        "Currency formatting and conversion",
+        "RTL (right-to-left) layout handling",
+        "Pluralization rules",
+        "Dynamic locale switching"
+      ],
+      "mocking": ["mock translation service", "mock locale detection", "stub intl formatters"],
+      "testTemplates": {
+        "translation": "mockI18n.t.mockReturnValue('Hola Mundo');\ncomponent.setLocale('es');\nexpect(component.greeting).toBe('Hola Mundo');",
+        "fallback": "mockI18n.t.mockReturnValue('fallback.key');\nexpected(component.text).toBe('fallback.key');"
+      },
+      "recommendedCoveragePct": 75
+    },
+    {
+      "id": "FILE_UPLOAD",
+      "name": "File Upload & Media Handling",
+      "triggerIndicators": ["FileReader", "FormData", "upload", "file input", "drag", "drop", "blob", "multipart"],
+      "priority": 3,
+      "whatToCover": [
+        "File selection and validation (size, type, count)",
+        "Upload progress tracking",
+        "Drag and drop functionality",
+        "File preview generation (images, thumbnails)",
+        "Upload cancellation and retry",
+        "Multiple file handling",
+        "Error handling (network, server, validation)"
+      ],
+      "mocking": ["mock FileReader", "mock FormData", "mock upload API", "mock file objects"],
+      "testTemplates": {
+        "fileSelect": "const file = new File(['content'], 'test.jpg', {type: 'image/jpeg'});\ncomponent.onFileSelect({target: {files: [file]}});\nexpect(component.selectedFiles).toContain(file);",
+        "validation": "const largeFile = new File(['x'.repeat(10000000)], 'large.jpg');\ncomponent.validateFile(largeFile);\nexpected(component.error).toContain('File too large');"
+      },
+      "recommendedCoveragePct": 80
+    },
+    {
+      "id": "REAL_TIME",
+      "name": "Real-time Communication (WebSocket, SSE)",
+      "triggerIndicators": ["WebSocket", "socket.io", "EventSource", "SSE", "real-time", "live updates"],
+      "priority": 4,
+      "whatToCover": [
+        "WebSocket connection establishment and cleanup",
+        "Message sending and receiving",
+        "Connection loss and reconnection logic",
+        "Event-driven state updates",
+        "Message queuing during disconnection",
+        "Authentication over WebSocket",
+        "Error handling and fallback mechanisms"
+      ],
+      "mocking": ["mock WebSocket", "mock socket.io", "simulate connection events"],
+      "testTemplates": {
+        "connect": "mockSocket.connect.mockImplementation(() => {\n  mockSocket.onopen();\n});\ncomponent.connect();\nexpected(component.connected).toBe(true);",
+        "message": "mockSocket.onmessage({data: JSON.stringify({type: 'update', payload: data})});\nexpected(component.liveData).toEqual(data);"
+      },
+      "recommendedCoveragePct": 80
+    },
+    {
+      "id": "PWA_OFFLINE",
+      "name": "Progressive Web App & Offline Support",
+      "triggerIndicators": ["serviceWorker", "navigator.onLine", "offline", "cache", "workbox", "manifest"],
+      "priority": 5,
+      "whatToCover": [
+        "Service worker registration and updates",
+        "Offline detection and UI adaptation",
+        "Cache-first vs network-first strategies",
+        "Background sync and queued operations",
+        "Push notification handling",
+        "App install prompts and PWA features",
+        "Offline form submission queuing"
+      ],
+      "mocking": ["mock navigator.onLine", "mock service worker APIs", "mock cache storage"],
+      "testTemplates": {
+        "offline": "mockNavigator.onLine = false;\nwindow.dispatchEvent(new Event('offline'));\nexpected(component.isOffline).toBe(true);",
+        "swUpdate": "mockServiceWorker.postMessage({type: 'SKIP_WAITING'});\nexpected(component.showUpdatePrompt).toBe(true);"
+      },
+      "recommendedCoveragePct": 70
+    },
+    {
+      "id": "SECURITY_SANITIZATION",
+      "name": "Security & Input Sanitization",
+      "triggerIndicators": ["sanitize", "DOMSanitizer", "xss", "csrf", "innerHTML", "dangerouslySetInnerHTML"],
+      "priority": 2,
+      "whatToCover": [
+        "HTML/script injection prevention",
+        "URL sanitization and validation",
+        "CSRF token handling",
+        "Input escaping and encoding",
+        "Content Security Policy compliance",
+        "Safe dynamic content rendering",
+        "File upload security validation"
+      ],
+      "mocking": ["mock sanitizer services", "mock security policies"],
+      "testTemplates": {
+        "xssProtection": "const maliciousInput = '<script>alert(\"xss\")</script>';\nconst sanitized = sanitizer.sanitize(maliciousInput);\nexpected(sanitized).not.toContain('<script>');",
+        "csrfToken": "mockHttp.intercept.mockImplementation(req => {\n  expect(req.headers['X-CSRF-Token']).toBeTruthy();\n});"
+      },
+      "recommendedCoveragePct": 90
+    },
+    {
+      "id": "RESPONSIVE_BREAKPOINTS",
+      "name": "Responsive Design & Breakpoints",
+      "triggerIndicators": ["@media", "breakpoint", "viewport", "resize", "matchMedia", "mobile", "tablet"],
+      "priority": 5,
+      "whatToCover": [
+        "Component behavior at different screen sizes",
+        "Responsive navigation (hamburger menu, sidebar)",
+        "Touch vs mouse event handling",
+        "Viewport-dependent content visibility",
+        "Image srcset and lazy loading",
+        "Orientation change handling"
+      ],
+      "mocking": ["mock window.matchMedia", "mock viewport dimensions", "simulate resize events"],
+      "testTemplates": {
+        "breakpoint": "mockMatchMedia('(max-width: 768px)').matches = true;\nwindow.dispatchEvent(new Event('resize'));\nexpected(component.isMobile).toBe(true);",
+        "orientation": "screen.orientation.angle = 90;\nwindow.dispatchEvent(new Event('orientationchange'));\nexpected(component.isLandscape).toBe(true);"
+      },
+      "recommendedCoveragePct": 65
+    },
+    {
+      "id": "THIRD_PARTY_INTEGRATION",
+      "name": "Third-party Libraries & SDKs",
+      "triggerIndicators": ["SDK", "widget", "embed", "iframe", "external", "vendor", "plugin"],
+      "priority": 4,
+      "whatToCover": [
+        "SDK initialization and configuration",
+        "Event callbacks from third-party services",
+        "Error handling when external service fails",
+        "Fallback UI when third-party unavailable",
+        "Data mapping between app and external APIs",
+        "Widget loading and error states"
+      ],
+      "mocking": ["mock third-party SDKs", "mock external API responses", "mock widget loading"],
+      "testTemplates": {
+        "sdkInit": "mockSDK.init.mockImplementation((config, callback) => {\n  callback({success: true});\n});\ncomponent.initializeSDK();\nexpected(component.sdkReady).toBe(true);",
+        "fallback": "mockSDK.load.mockRejectedValue(new Error('Network error'));\ncomponent.loadWidget();\nexpected(component.showFallbackUI).toBe(true);"
+      },
+      "recommendedCoveragePct": 75
+    },
+    {
+      "id": "COVERAGE_COMPLETION",
+      "name": "Coverage Gap Analysis",
+      "triggerIndicators": ["after initial test run"],
+      "priority": 1,
+      "whatToCover": [
+        "All conditional branches (if/else, ternary, switch)",
+        "Error handling catch blocks",
+        "Default parameter branches",
+        "Null/undefined guard clauses",
+        "Early return statements",
+        "Private method indirect testing via public APIs"
+      ],
+      "iterativeApproach": {
+        "step1": "Generate tests using existing patterns (expect 60-70%)",
+        "step2": "Run coverage report, identify uncovered lines",
+        "step3": "Add minimal tests for each uncovered branch",
+        "step4": "Target remaining edge cases and error paths"
+      },
+      "testTemplates": {
+        "branchCoverage": "// For each uncovered if/else, add minimal test\nif (condition) { /* covered */ } else { /* add test for this branch */ }",
+        "errorBranch": "try { riskyOperation(); } catch (error) { /* add test that triggers this catch */ }",
+        "guardClause": "if (!input) return null; // add test with null/undefined input",
+        "ternary": "result = condition ? valueA : valueB; // test both condition true and false"
+      },
+      "mocking": ["minimal mocks to trigger specific branches", "spy on private methods via public APIs"],
+      "recommendedCoveragePct": 95
+    }
+  ]
+}
