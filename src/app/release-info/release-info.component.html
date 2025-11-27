@@ -15,7 +15,7 @@
   <!-- Release Data -->
   <div *ngIf="!isLoading && !errorMessage && releasesData.length > 0" class="releases-container">
     <div class="releases-header">
-      <h3>Found {{ releasesData.length }} release(s)</h3>
+      <h3>Found {{ releasesData.length }} release(s)(Inclusing all modules)</h3>
       <button (click)="refreshReleases()" class="refresh-btn">Refresh</button>
     </div>
 

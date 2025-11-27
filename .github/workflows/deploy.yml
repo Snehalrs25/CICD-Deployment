@@ -17,6 +17,7 @@ concurrency:
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
+    # NO environment section here - causes branch protection errors
     
     steps:
     - name: Checkout repository
@@ -50,25 +51,15 @@ jobs:
           exit 1
         fi
         
-        # Extract coverage percentages from output
+        # Extract coverage percentages
         STMT_COV=$(grep -E "All files.*%" test-output.log | awk '{print $4}' | sed 's/%//' || echo "0")
-        BRANCH_COV=$(grep -E "All files.*%" test-output.log | awk '{print $5}' | sed 's/%//' || echo "0")
-        FUNC_COV=$(grep -E "All files.*%" test-output.log | awk '{print $6}' | sed 's/%//' || echo "0")
-        LINE_COV=$(grep -E "All files.*%" test-output.log | awk '{print $7}' | sed 's/%//' || echo "0")
-        
-        # Use statement coverage as the primary metric
         TOTAL_COV=$STMT_COV
         
-        echo "📊 Coverage Results:"
-        echo "Statements: ${STMT_COV}%"
-        echo "Branches: ${BRANCH_COV}%"
-        echo "Functions: ${FUNC_COV}%"
-        echo "Lines: ${LINE_COV}%"
-        echo "Total Coverage: ${TOTAL_COV}%"
+        echo "📊 Total Coverage: ${TOTAL_COV}%"
         
-        # Check if coverage meets minimum requirement (80%)
+        # Check 80% threshold
         if (( $(echo "$TOTAL_COV < 80" | bc -l) )); then
-          echo "❌ Coverage ${TOTAL_COV}% is below required 80%. Stopping deployment."
+          echo "❌ Coverage ${TOTAL_COV}% < 80%. Stopping deployment."
           exit 1
         fi
         
